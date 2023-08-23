@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func main() {
 	var n int
@@ -8,87 +11,141 @@ func main() {
 	if err != nil {
 		return
 	}
-	list := &Node{}
+	list := Constructor()
 	for i := 0; i < n; i++ {
-		var num int
-		_, err = fmt.Scan(&num)
+		var data int
+		_, err = fmt.Scan(&data)
 		if err != nil {
 			return
 		}
-		fmt.Printf("输入了 %d", num)
-		list.insert(1, num)
+		list.insert(1, data)
 	}
-	list.show()
+	var m int
+	_, err = fmt.Scan(&m)
+	if err != nil {
+		return
+	}
+	for i := 0; i < m; i++ {
+		var s string
+		_, err = fmt.Scan(&s)
+		if err != nil {
+			return
+		}
+		switch s {
+		case "get":
+			var index int
+			_, err = fmt.Scan(&index)
+			if err != nil {
+				return
+			}
+			val, err := list.get(index)
+			if err != nil {
+				fmt.Println(err.Error())
+			} else {
+				fmt.Println(val)
+			}
+		case "delete":
+			var index int
+			_, err = fmt.Scan(&index)
+			if err != nil {
+				return
+			}
+			err := list.delete(index)
+			if err != nil {
+				fmt.Println(err.Error())
+			} else {
+				fmt.Println("delete OK")
+			}
+		case "insert":
+			var index, val int
+			_, err = fmt.Scan(&index, &val)
+			if err != nil {
+				return
+			}
+			if err = list.insert(index, val); err != nil {
+				fmt.Println(err.Error())
+			} else {
+				fmt.Println("insert OK")
+			}
+		case "show":
+			list.Show()
+
+		}
+	}
 }
 
 type Node struct {
-	data int
+	val  int
 	next *Node
 }
 
-func (head *Node) show() {
-	if head == nil {
-		fmt.Println("Link list is empty")
-		return
-	}
-	cur := head
-	for cur != nil {
-		fmt.Printf("%d ", cur.data)
-		cur = cur.next
-	}
+type MyLinkedList struct {
+	size int
+	head *Node
 }
 
-func (head *Node) get(index int) *Node {
-	cur := head
-	for i := 1; i < index; i++ {
-		if cur == nil {
-			return nil
-		}
-		cur = cur.next
-	}
-	return cur
+func Constructor() MyLinkedList {
+	return MyLinkedList{}
 }
 
-// - 3 4
-func (head *Node) delete(index int) {
-	if head == nil {
-		fmt.Println("delete fail")
-		return
+// 1 2 3
+func (this *MyLinkedList) get(index int) (int, error) {
+	index--
+	if this.size == 0 || index < 0 || index > this.size {
+		return -1, errors.New("get fail")
 	}
-	dummyHead := &Node{next: head}
+	cur := this.head
+	for i := 0; i < index; i++ {
+		cur = cur.next
+	}
+	return cur.val, nil
+}
+
+func (this *MyLinkedList) insert(index, val int) error {
+	index--
+	if index < 0 || index > this.size {
+		return errors.New("insert fail")
+	}
+	dummyHead := &Node{next: this.head}
 	cur := dummyHead
-	if index == 1 {
-		cur.next = cur.next.next
-		return
+	for i := 0; i < index; i++ {
+		cur = cur.next
 	}
-	for i := 0; i < index-1; i++ {
-		if cur.next.next == nil {
-			fmt.Println("delete fail")
-			return
-		}
+	newNode := &Node{
+		val:  val,
+		next: cur.next,
+	}
+	cur.next = newNode
+	this.size++
+	this.head = dummyHead.next
+	return nil
+}
+
+func (this *MyLinkedList) delete(index int) error {
+	index--
+	if this.size == 0 || index < 0 || index > this.size-1 {
+		return errors.New("delete fail")
+	}
+	dummyHead := &Node{next: this.head}
+	cur := dummyHead
+	for i := 0; i < index; i++ {
 		cur = cur.next
 	}
 	cur.next = cur.next.next
-	return
+	this.size--
+	this.head = dummyHead.next
+	return nil
 }
 
-func (head *Node) insert(index, val int) {
-	dummyHead := &Node{next: head}
-	cur := dummyHead
-	for i := 0; i < index; i++ {
-		if cur.next == nil {
-			fmt.Println("insert fail")
-			return
-		}
+func (this *MyLinkedList) Show() {
+	if this.size == 0 {
+		fmt.Println("Link list is empty")
+		return
+	}
+	cur := this.head
+	for cur.next != nil {
+		fmt.Printf("%d ", cur.val)
 		cur = cur.next
 	}
-	//n:=Node{
-	//	data: val,
-	//	next: cur.next,
-	//}
-	cur.next = &Node{
-		data: val,
-		next: cur.next,
-	}
-	return
+	fmt.Println(cur.val)
 }

@@ -2,43 +2,28 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
-	num1 := []int{0, 0, 1, 1, 1, 1, 1, 1, 2, 3, 3}
-	fmt.Println(removeElements(num1))
-	fmt.Println(num1)
+	r := isPalindrome("A man, a plan, a canal: Panama")
+	fmt.Println(r)
 }
 
-type MyLinkedList struct {
-	val  int
-	next *MyLinkedList
-}
-
-func Constructor() MyLinkedList {
-	return MyLinkedList{}
-}
-
-func (this *MyLinkedList) Get(index int) int {
-	cur := this
-	for i := 0; i < index; i++ {
-		cur = cur.next
+func isPalindrome(s string) bool {
+	var str string
+	for i := 0; i < len(s); i++ {
+		if isalnum(s[i]) {
+			str = str + string(s[i])
+		}
 	}
-	return cur.val
+	str = strings.ToLower(str)
+	str2 := make([]string, len(str))
+	for i := 0; i < len(str); i++ {
+		str2[i] = string(str[len(str)-i-1])
+	}
+	return strings.Join(str2, "") == str
 }
-
-func (this *MyLinkedList) AddAtHead(val int) {
-
-}
-
-func (this *MyLinkedList) AddAtTail(val int) {
-
-}
-
-func (this *MyLinkedList) AddAtIndex(index int, val int) {
-
-}
-
-func (this *MyLinkedList) DeleteAtIndex(index int) {
-
+func isalnum(ch byte) bool {
+	return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')
 }

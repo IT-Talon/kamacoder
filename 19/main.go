@@ -25,10 +25,12 @@ func main() {
 			newNode := &Node{val: num}
 			temp.next = newNode
 			temp = temp.next
-			head = dummyNode.next
+			fmt.Printf("%d ", newNode.val)
 		}
-		show(head)
-		show(head.reverse())
+		fmt.Println()
+
+		//show(dummyNode.next)
+		show(reverse(dummyNode.next))
 	}
 }
 
@@ -52,12 +54,12 @@ type Node struct {
 	next *Node
 }
 
-func (l *Node) reverse() *Node {
-	if l == nil || l.next == nil {
-		return l
+func reverse(head *Node) *Node {
+	if head == nil || head.next == nil {
+		return head
 	}
 	var pre *Node
-	cur := l
+	cur := head
 	for {
 		temp := cur.next
 		cur.next = pre

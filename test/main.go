@@ -37,61 +37,21 @@ func main() {
 
 }
 
-func deleteDuplicates(head *ListNode) *ListNode {
+func hasCycle(head *ListNode) bool {
+	if head == nil || head.Next == nil {
+		return false
+	}
 	dummy := &ListNode{Next: head}
-	cur := dummy
-	for cur.Next != nil && cur.Next.Next != nil {
-		if cur.Next.Val == cur.Next.Next.Val {
-			x := cur.Next.Val
-			for cur.Next != nil && cur.Next.Val == x {
-				cur = cur.Next
-			}
-		} else {
-			cur = cur.Next
+	fast := dummy
+	slow := dummy
+	for fast.Next != nil && slow.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+		if fast == slow {
+			return true
 		}
-	}
-	return dummy.Next
-}
 
-// 1 2 3 4
-func reverse(head *ListNode) *ListNode {
-	cur := head
-	var pre *ListNode
-	for cur != nil {
-		temp := cur.Next
-		cur.Next = pre
-		pre = cur
-		cur = temp
-		if cur == nil {
-			return pre
-		}
 	}
-	return head
-}
+	return false
 
-func reverseBetween(head *ListNode, left int, right int) *ListNode {
-	if left == right {
-		return head
-	}
-	dummyHead := &ListNode{Next: head}
-
-	pre := dummyHead
-	for i := 0; i < left-1; i++ {
-		pre = pre.Next
-	}
-	sub := pre.Next
-	cur := pre.Next
-	for i := 0; i < right-left; i++ {
-		cur = cur.Next
-	}
-	succ := cur.Next
-	cur.Next = nil
-	s := reverse(sub)
-	t := s
-	for t.Next != nil {
-		t = t.Next
-	}
-	t.Next = succ
-	pre.Next = s
-	return dummyHead.Next
 }

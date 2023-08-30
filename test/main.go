@@ -8,7 +8,9 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type ListNode struct {
 	Val  int
@@ -32,66 +34,26 @@ func main() {
 			},
 		},
 	}
-	r := reverseBetween(head, 4, 5)
+	r := removeNthFromEnd(head, 2)
 	fmt.Println(r)
 
 }
 
-func deleteDuplicates(head *ListNode) *ListNode {
-	dummy := &ListNode{Next: head}
-	cur := dummy
-	for cur.Next != nil && cur.Next.Next != nil {
-		if cur.Next.Val == cur.Next.Next.Val {
-			x := cur.Next.Val
-			for cur.Next != nil && cur.Next.Val == x {
-				cur = cur.Next
-			}
-		} else {
-			cur = cur.Next
-		}
-	}
-	return dummy.Next
-}
-
-// 1 2 3 4
-func reverse(head *ListNode) *ListNode {
-	cur := head
-	var pre *ListNode
-	for cur != nil {
-		temp := cur.Next
-		cur.Next = pre
-		pre = cur
-		cur = temp
-		if cur == nil {
-			return pre
-		}
-	}
-	return head
-}
-
-func reverseBetween(head *ListNode, left int, right int) *ListNode {
-	if left == right {
-		return head
-	}
+func partition(head *ListNode, x int) *ListNode {
 	dummyHead := &ListNode{Next: head}
-
-	pre := dummyHead
-	for i := 0; i < left-1; i++ {
-		pre = pre.Next
+	right := &ListNode{}
+	temp := right
+	cur := head
+	for cur.Next != nil {
+		if cur.Next.Val < x {
+			cur = cur.Next
+		} else {
+			temp.Next = cur.Next
+			temp = temp.Next
+			cur.Next = cur.Next.Next
+		}
 	}
-	sub := pre.Next
-	cur := pre.Next
-	for i := 0; i < right-left; i++ {
-		cur = cur.Next
-	}
-	succ := cur.Next
-	cur.Next = nil
-	s := reverse(sub)
-	t := s
-	for t.Next != nil {
-		t = t.Next
-	}
-	t.Next = succ
-	pre.Next = s
+	temp.Next = nil
+	cur.Next = right
 	return dummyHead.Next
 }

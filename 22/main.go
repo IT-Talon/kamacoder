@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	var a map[string]string
 	var n int
 	_, err := fmt.Scanln(&n)
 	if err != nil {

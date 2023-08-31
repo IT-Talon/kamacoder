@@ -6,16 +6,36 @@ import (
 )
 
 func main() {
-	obj := Constructor(2)
-	obj.Put(1, 1)
-	obj.Put(2, 2)
-	fmt.Println(obj.Get(1))
-	obj.Put(3, 3)
-	fmt.Println(obj.Get(2))
-	obj.Put(4, 4)
-	fmt.Println(obj.Get(1))
-	fmt.Println(obj.Get(3))
-	fmt.Println(obj.Get(4))
+	fmt.Println("hello")
+}
+
+func getSum(n int) int {
+	var sum int
+	for {
+		num := n % 10
+		sum += num * num
+		n = n / 10
+		if n == 0 {
+			return sum
+		}
+	}
+}
+
+func isHappy(n int) bool {
+	m := make(map[int]struct{})
+	m[n] = struct{}{}
+	sum := getSum(n)
+	for {
+		if sum == 1 {
+			return true
+		} else {
+			if _, ok := m[sum]; ok {
+				return false
+			}
+			m[sum] = struct{}{}
+		}
+		sum = getSum(sum)
+	}
 }
 
 type entry struct {

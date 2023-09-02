@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,7 +15,7 @@ var secrets = gin.H{
 
 func main() {
 	r := gin.Default()
-
+	list.New()
 	// 路由组使用 gin.BasicAuth() 中间件
 	// gin.Accounts 是 map[string]string 的一种快捷方式
 	authorized := r.Group("/admin", gin.BasicAuth(gin.Accounts{

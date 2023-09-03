@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 )
 
@@ -39,4 +40,30 @@ func order(root *TreeNode, index int) {
 
 	order(root.Left, index+1)
 	order(root.Right, index+1)
+}
+
+func order2(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+	l := list.New()
+	l.PushBack(root)
+	res := make([][]int, 0)
+	for l.Len() > 0 {
+		var temp []int
+		length := l.Len()
+		for i := 0; i < length; i++ {
+			n := l.Remove(l.Front()).(*TreeNode)
+			temp = append(temp, n.Val)
+			if n.Left != nil {
+				l.PushBack(n.Left)
+			}
+			if n.Right != nil {
+				l.PushBack(n.Right)
+			}
+		}
+		res = append(res, temp)
+	}
+	return res
+
 }

@@ -5,6 +5,10 @@ import (
 )
 
 func main() {
+	var a [4]int
+	c := cap(a)
+	fmt.Println(c)
+	fmt.Println(7 >> 2)
 	fmt.Println(quicksort3([]int{2, 56, 32, 6, 2, 1}))
 	fmt.Println(quicksort2([]int{2, 56, 32, 6, 2, 1}))
 	fmt.Println(quicksort([]int{2, 56, 32, 6, 2, 1}))

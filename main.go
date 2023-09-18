@@ -6,6 +6,12 @@ import (
 )
 
 func main() {
+	a := make(map[string]string)
+	a["a"] = "a"
+	a["b"] = "b"
+	delete(a, "a")
+	delete(a, "a")
+	fmt.Println(a)
 	fmt.Println("hello")
 }
 

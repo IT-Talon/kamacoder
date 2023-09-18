@@ -5,9 +5,11 @@ import (
 )
 
 func main() {
-	fmt.Println(quicksort3([]int{2, 56, 32, 6, 2, 1}))
-	fmt.Println(quicksort2([]int{2, 56, 32, 6, 2, 1}))
-	fmt.Println(quicksort([]int{2, 56, 32, 6, 2, 1}))
+	var data = []int{2, 56, 32, 6, 2, 1}
+	fmt.Println(data[:0])
+	fmt.Println(quicksort3(data))
+	fmt.Println(quicksort2(data))
+	fmt.Println(quicksort(data))
 }
 
 // 分治，大的往右堆，小的往左堆，然后大小堆继续递归排序，最后合并
@@ -32,6 +34,7 @@ func quicksort(data []int) []int {
 }
 
 // 2, 56, 32, 6, 2, 1
+// 2 1 32 6 2 56
 // 分治，遍历数组，大的往右堆，小的往左堆，将选择的轴点交换到大小堆的中心点来，然后递归排序中心点右边的大堆和中心点左边的小堆
 func quicksort2(data []int) []int {
 	if len(data) <= 1 {
@@ -46,12 +49,16 @@ func quicksort2(data []int) []int {
 		}
 	}
 	data[0], data[i-1] = data[i-1], data[0]
-	quicksort2(data[:i])
+	quicksort2(data[:i-1])
 	quicksort2(data[i:])
 	return data
 }
 
 // 2, 56, 32, 6, 2, 1
+//2 1 32 6 2 56
+//2 1 32 6 2 56
+//2 1 2 6 32 56
+
 // 分治，遍历数组，大的往右堆，小的往左堆，将选择的轴点交换到大小堆的中心点来，然后递归排序中心点右边的大堆和中心点左边的小堆
 func quicksort3(data []int) []int {
 	if len(data) <= 1 {
